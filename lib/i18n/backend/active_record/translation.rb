@@ -70,7 +70,8 @@ module I18n
             end
 
             namespace = "#{keys.last}#{I18n::Backend::Flatten::FLATTEN_SEPARATOR}%"
-            scoped(:conditions => ["#{column_name} IN (?) OR #{column_name} LIKE ?", keys, namespace])
+            mysql_hack = 'BINARY ' if ::ActiveRecord::Base.connection.class.to_s =~ /mysql/i
+            scoped(:conditions => ["#{mysql_hack}#{column_name} IN (?) OR #{mysql_hack}#{column_name} LIKE ?", keys, namespace])
           end
 
           def available_locales
