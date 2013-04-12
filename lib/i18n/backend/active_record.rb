@@ -32,8 +32,8 @@ module I18n
 
           if result.empty?
             nil
-          elsif result.first.key == key
-            result.first.value
+          elsif (matching = result.select { |r| r.key == key }.first)
+            matching.value
           else
             chop_range = (key.size + FLATTEN_SEPARATOR.size)..-1
             result = result.inject({}) do |hash, r|
